@@ -1,4 +1,4 @@
-ASK ME 🎤
+ASK ME 
 ASK ME é uma aplicação de perguntas e respostas, semelhante ao Ask.fm, criada para fornecer uma interface simples e interativa onde os usuários podem fazer e responder perguntas.
 
 🛠️ Tecnologias Utilizadas
