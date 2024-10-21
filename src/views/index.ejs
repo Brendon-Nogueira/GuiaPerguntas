@@ -1,0 +1,82 @@
+<%- include('partials/header.ejs') %>
+<body>
+    <%- include('partials/navbar.ejs') %>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-xl-10 col-lg-12 col-md-12 col-sm-12">
+                <div class="card shadow-sm">
+                    <div class="card-header alert alert-success">
+                        <h3 class="text-left">Lista de Perguntas</h3>
+                    </div>
+                    <div class="card-body alert alert-light">
+                        <% if (questions && questions.length > 0) { %>
+                            <ul class="list-group">
+                                <% questions.forEach((question, index) => { %>
+                                    <li class="list-group-item mb-4">
+                                        <div class="mb-2">
+                                            <strong><%= question.title %></strong>: <%= question.description %>
+                                        </div>
+                                        <% if (question.response) { %>
+                                            <div class="alert alert-success" id="response-<%= question.id %>">
+                                                <strong>Sua resposta:</strong>
+                                                <p><%= question.response %></p>
+                                            </div>
+                                        <% } else { %>
+                                            <form id="form-<%= question.id %>" onsubmit="submitAnswer(event, <%= question.id %>)">
+                                                <div class="form-group">
+                                                    <label for="answer<%= index %>">Sua resposta:</label>
+                                                    <textarea class="form-control" id="answer<%= question.id %>" name="answer" rows="3" placeholder="Digite sua resposta aqui"></textarea>
+                                                </div>
+                                                <button type="submit" class="btn btn-success mt-3">Responder</button>
+                                            </form>
+                                        <% } %>
+                                    </li>
+                                <% }) %>
+                            </ul>
+                        <% } else { %>
+                            <p class="text-center">Nenhuma pergunta encontrada.</p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        function submitAnswer(event, questionId) {
+            event.preventDefault();
+            const form = document.getElementById(`form-${questionId}`);
+            const formData = new FormData(form)
+
+            fetch(`/submit-answer/${questionId}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    answer: formData.get('answer')
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const responseDiv = document.getElementById(`response-${questionId}`)
+                    if (responseDiv) {
+                        responseDiv.innerHTML = `<strong>Sua resposta:</strong><p>${formData.get('answer')}</p>`
+                    } else {
+                        const newResponseDiv = document.createElement('div');
+                        newResponseDiv.classList.add('alert', 'alert-success');
+                        newResponseDiv.id = `response-${questionId}`;
+                        newResponseDiv.innerHTML = `<strong>Sua resposta:</strong><p>${formData.get('answer')}</p>`
+                        form.parentElement.insertBefore(newResponseDiv, form);
+                        form.remove();
+                    }
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        }
+    </script>
+
+    <%- include('partials/footer.ejs') %>
+</body>

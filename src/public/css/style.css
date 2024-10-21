@@ -1,0 +1,12 @@
+body{
+    background-color: #eceff1;
+}
+
+.highlight-response {
+    background-color: #f8f9fa; 
+    border: 0.5px solid #6c757d; 
+    border-radius: 5px;
+    padding: 15px;
+    font-size: 1.1rem;
+    color: #212529; 
+}
