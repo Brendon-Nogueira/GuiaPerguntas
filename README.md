@@ -55,7 +55,7 @@ npx sequelize-cli db:migrate
 ```bash
 npm start
 ```
-O servidor estará disponível em: [http://localhost:3000](http://localhost:3000)
+O servidor estará disponível em: [http://localhost:8088](http://localhost:8088)
 
 ## 🖥️ Estrutura do Projeto
 ```plaintext
